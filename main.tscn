@@ -1,0 +1,93 @@
+[gd_scene load_steps=4 format=3 uid="uid://bwam8rj06rksi"]
+
+[ext_resource type="Script" path="res://file_manager.gd" id="1_kxlp3"]
+[ext_resource type="Script" path="res://file_menu_controller.gd" id="2_ytidu"]
+[ext_resource type="PackedScene" uid="uid://orima3j1b50a" path="res://file_tab.tscn" id="3_kilfo"]
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_kxlp3")
+
+[node name="PanelContainerTopMenu" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 31.0
+grow_horizontal = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainerTopMenu"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainerTopMenu/MarginContainer"]
+layout_mode = 2
+
+[node name="MenuButtonFile" type="MenuButton" parent="PanelContainerTopMenu/MarginContainer/HBoxContainer" node_paths=PackedStringArray("file_manager")]
+layout_mode = 2
+text = "File"
+item_count = 6
+popup/item_0/text = "New File"
+popup/item_0/id = 3
+popup/item_1/text = "Open File"
+popup/item_1/id = 0
+popup/item_2/text = "Save File"
+popup/item_2/id = 1
+popup/item_3/text = "Close File"
+popup/item_3/id = 2
+popup/item_4/text = ""
+popup/item_4/id = 4
+popup/item_4/separator = true
+popup/item_5/text = "Quit"
+popup/item_5/id = 5
+script = ExtResource("2_ytidu")
+file_manager = NodePath("../../../../FileManager")
+
+[node name="MenuButtonEdit" type="MenuButton" parent="PanelContainerTopMenu/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "Edit"
+item_count = 1
+popup/item_0/text = "Clear"
+popup/item_0/id = 0
+
+[node name="TabContainer" type="TabContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 41.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="file1" parent="TabContainer" instance=ExtResource("3_kilfo")]
+layout_mode = 2
+
+[node name="FileDialogOpen" type="FileDialog" parent="."]
+mode = 3
+title = "Open a File"
+initial_position = 2
+size = Vector2i(600, 500)
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+
+[node name="FileDialogSave" type="FileDialog" parent="."]
+mode = 3
+initial_position = 2
+size = Vector2i(600, 500)
+ok_button_text = "Save"
+access = 2
+
+[node name="FileManager" type="Node" parent="." node_paths=PackedStringArray("tab_container", "file_dialog_open", "file_dialog_save")]
+script = ExtResource("1_kxlp3")
+tab_container = NodePath("../TabContainer")
+tab_file_prefab = ExtResource("3_kilfo")
+file_dialog_open = NodePath("../FileDialogOpen")
+file_dialog_save = NodePath("../FileDialogSave")
