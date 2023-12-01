@@ -22,3 +22,5 @@ unique_name_in_owner = true
 layout_mode = 2
 wrap_mode = 1
 highlight_current_line = true
+caret_blink = true
+caret_blink_interval = 0.5
