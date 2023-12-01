@@ -8,12 +8,17 @@ class_name FileManager
 @export var file_dialog_open: FileDialog
 @export var file_dialog_save: FileDialog
 
+signal on_changed_any_file_tab_open(bool)
+
 func _ready() -> void:
 	file_dialog_open.file_selected.connect(_on_open_file)
 	file_dialog_save.file_selected.connect(_on_save_file)
+	
+	tab_container.tab_changed.connect(_on_focus_tab)
 
-func _on_tab_changed(id: int) -> void:
-	print(id)
+func _on_focus_tab(id: int) -> void:
+	var file_tab = tab_container.get_tab_control(id) as FileTab
+	file_tab.on_tab_selected()
 
 func _tab_count() -> int:
 	return tab_container.get_child_count()
@@ -25,6 +30,9 @@ func close_current_file() -> void:
 	if not _any_file_tabs():
 		return
 		
+	if _tab_count() == 1:
+		on_changed_any_file_tab_open.emit(false)
+		
 	var active_tab = tab_container.get_current_tab_control()
 	active_tab.queue_free()
 
@@ -32,6 +40,9 @@ func show_open_file_dialog() -> void:
 	file_dialog_open.show()
 
 func show_save_file_dialog() -> void:
+	if not _any_file_tabs():
+		return
+		
 	file_dialog_save.show()
 
 func create_new_file_tab() -> int:
@@ -44,6 +55,8 @@ func create_new_file_tab() -> int:
 	tab_container.current_tab = idx
 	
 	new_tab.on_file_changed.connect(func(has_changes): _mark_file_changes(new_tab, has_changes))
+	
+	_check_file_actions()
 	
 	return idx
 
@@ -70,6 +83,8 @@ func _on_open_file(path: String) -> void:
 	
 	# convenience when opening save file dialog, it is at the same path
 	file_dialog_save.current_path = path
+	
+	_check_file_actions()
 
 func _on_save_file(path: String) -> void:
 	var file_name = path.split("/")[-1]
@@ -83,3 +98,6 @@ func _on_save_file(path: String) -> void:
 
 	# convenience when opening open file dialog, it is at the same path
 	file_dialog_open.current_path = path
+
+func _check_file_actions() -> void:
+	on_changed_any_file_tab_open.emit(_any_file_tabs())

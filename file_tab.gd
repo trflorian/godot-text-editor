@@ -11,7 +11,7 @@ var original_file_content: String = ""
 
 func _ready() -> void:
 	text_edit.text_changed.connect(_on_text_changed)
-	
+
 func _on_text_changed() -> void: 
 	var has_changes = newly_created or text_edit.text != original_file_content
 	on_file_changed.emit(has_changes)
@@ -26,7 +26,6 @@ func load_from_file(file_path: String) -> void:
 	
 	text_edit.text = content
 	original_file_content = content
-	
 
 func save_to_file(file_path: String) -> void:
 	print("Saving file to %s" % file_path)
@@ -40,3 +39,6 @@ func save_to_file(file_path: String) -> void:
 	
 	original_file_content = content
 	on_file_changed.emit(false)
+
+func on_tab_selected():
+	text_edit.grab_focus()

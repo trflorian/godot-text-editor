@@ -4,6 +4,9 @@ extends MenuButton
 
 func _ready() -> void:
 	get_popup().index_pressed.connect(_on_menu_item_selected)
+	
+	_on_check_file_actions(false)
+	file_manager.on_changed_any_file_tab_open.connect(_on_check_file_actions)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("file_new"):
@@ -29,3 +32,7 @@ func _on_menu_item_selected(id: int) -> void:
 	else: # unknow menu item
 		var item_name = get_popup().get_item_text(id)
 		print("Unkown file menu item id=%d, name=%s" % [id, item_name])
+
+func _on_check_file_actions(any_tabs: bool):
+	get_popup().set_item_disabled(2, not any_tabs)
+	get_popup().set_item_disabled(3, not any_tabs)
