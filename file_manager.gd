@@ -22,7 +22,7 @@ func show_save_file_dialog() -> void:
 	file_dialog_save.show()
 
 func create_new_file_tab() -> int:
-	var new_tab = tab_file_prefab.instantiate()
+	var new_tab = tab_file_prefab.instantiate() as FileTab
 	tab_container.add_child(new_tab)
 	
 	var idx = tab_container.get_tab_idx_from_control(new_tab)
@@ -30,7 +30,19 @@ func create_new_file_tab() -> int:
 	
 	tab_container.current_tab = idx
 	
+	new_tab.on_file_changed.connect(func(has_changes): _mark_file_changes(idx, has_changes))
+	
 	return idx
+
+func _mark_file_changes(idx: int, has_changes: bool) -> void:
+	var title = tab_container.get_tab_title(idx)
+	var title_changes = title.ends_with("*")
+	
+	if not title_changes and has_changes:
+		tab_container.set_tab_title(idx, title + "*")
+	elif title_changes and not has_changes:
+		var title_without_changes = title.substr(0, title.length()-1)
+		tab_container.set_tab_title(idx, title_without_changes)
 
 func _on_open_file(path: String) -> void:
 	var file_name = path.split("/")[-1]

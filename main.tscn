@@ -72,9 +72,6 @@ offset_top = 41.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="file1" parent="TabContainer" instance=ExtResource("3_kilfo")]
-layout_mode = 2
-
 [node name="FileDialogOpen" type="FileDialog" parent="."]
 mode = 3
 title = "Open a File"
