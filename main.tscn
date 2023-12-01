@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://bwam8rj06rksi"]
 
-[ext_resource type="Script" path="res://file_manager.gd" id="1_kxlp3"]
-[ext_resource type="Script" path="res://file_menu_controller.gd" id="2_ytidu"]
-[ext_resource type="PackedScene" uid="uid://orima3j1b50a" path="res://file_tab.tscn" id="3_kilfo"]
+[ext_resource type="Script" path="res://file/file_manager.gd" id="1_erab1"]
+[ext_resource type="PackedScene" uid="uid://orima3j1b50a" path="res://file/tab/file_tab.tscn" id="2_vpn4i"]
+[ext_resource type="Script" path="res://menu/menu_file_controller.gd" id="3_7xq15"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -13,9 +13,9 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="FileManager" type="Node" parent="." node_paths=PackedStringArray("tab_container", "file_dialog_open", "file_dialog_save")]
-script = ExtResource("1_kxlp3")
+script = ExtResource("1_erab1")
 tab_container = NodePath("../TabContainer")
-tab_file_prefab = ExtResource("3_kilfo")
+tab_file_prefab = ExtResource("2_vpn4i")
 file_dialog_open = NodePath("../FileDialogOpen")
 file_dialog_save = NodePath("../FileDialogSave")
 
@@ -53,7 +53,7 @@ popup/item_4/id = 4
 popup/item_4/separator = true
 popup/item_5/text = "Quit"
 popup/item_5/id = 5
-script = ExtResource("2_ytidu")
+script = ExtResource("3_7xq15")
 file_manager = NodePath("../../../../FileManager")
 
 [node name="MenuButtonEdit" type="MenuButton" parent="PanelContainerTopMenu/MarginContainer/HBoxContainer"]
