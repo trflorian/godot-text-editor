@@ -7,6 +7,7 @@ class_name FileManager
 
 @export var file_dialog_open: FileDialog
 @export var file_dialog_save: FileDialog
+@export var dialog_close_unsaved: ConfirmationDialog
 
 signal on_changed_any_file_tab_open(bool)
 
@@ -15,6 +16,14 @@ func _ready() -> void:
 	file_dialog_save.file_selected.connect(_on_save_file)
 	
 	tab_container.tab_changed.connect(_on_focus_tab)
+	
+	dialog_close_unsaved.add_button("Save", false, "save")
+	dialog_close_unsaved.confirmed.connect(func(): close_current_file(true))
+	dialog_close_unsaved.custom_action.connect(func(_action: String): _save_and_close())
+
+func _save_and_close():
+	dialog_close_unsaved.hide()
+	show_save_file_dialog()
 
 func _on_focus_tab(id: int) -> void:
 	var file_tab = tab_container.get_tab_control(id) as FileTab
@@ -26,15 +35,23 @@ func _tab_count() -> int:
 func _any_file_tabs() -> bool:
 	return _tab_count() > 0
 
-func close_current_file() -> void:
+func close_current_file(force: bool = false) -> void:
 	if not _any_file_tabs():
 		return
+	
+	var is_last_tab = _tab_count() == 1
 		
-	if _tab_count() == 1:
-		on_changed_any_file_tab_open.emit(false)
+	var active_tab = tab_container.get_current_tab_control() as FileTab
+	
+	if active_tab.has_changes() and not force:
+		dialog_close_unsaved.dialog_text = "Do you want to save the changes you made to the file %s?" % active_tab.file_name
+		dialog_close_unsaved.show()
+		dialog_close_unsaved.get_cancel_button().grab_focus()
+	else:
+		active_tab.queue_free()
 		
-	var active_tab = tab_container.get_current_tab_control()
-	active_tab.queue_free()
+		if is_last_tab:
+			on_changed_any_file_tab_open.emit(false)
 
 func show_open_file_dialog() -> void:
 	file_dialog_open.show()

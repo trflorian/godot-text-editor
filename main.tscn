@@ -13,12 +13,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="FileManager" type="Node" parent="." node_paths=PackedStringArray("tab_container", "file_dialog_open", "file_dialog_save")]
+[node name="FileManager" type="Node" parent="." node_paths=PackedStringArray("tab_container", "file_dialog_open", "file_dialog_save", "dialog_close_unsaved")]
 script = ExtResource("1_erab1")
 tab_container = NodePath("../TabContainerFiles")
 tab_file_prefab = ExtResource("2_vpn4i")
 file_dialog_open = NodePath("../FileDialogOpen")
 file_dialog_save = NodePath("../FileDialogSave")
+dialog_close_unsaved = NodePath("../ConfirmationDialogCloseUnsaved")
 
 [node name="PanelContainerTopMenu" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -90,3 +91,10 @@ initial_position = 2
 size = Vector2i(600, 500)
 ok_button_text = "Save"
 access = 1
+
+[node name="ConfirmationDialogCloseUnsaved" type="ConfirmationDialog" parent="."]
+title = "Unsaved changes"
+initial_position = 1
+size = Vector2i(495, 83)
+ok_button_text = "Don't Save"
+dialog_text = "Do you want to save the changes you made to the file XYZ.txt?"
