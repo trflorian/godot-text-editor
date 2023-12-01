@@ -60,6 +60,10 @@ func create_new_file_tab() -> int:
 	
 	return idx
 
+func clear_content_current_file() -> void:
+	var active_tab = tab_container.get_current_tab_control() as FileTab
+	active_tab.clear_content()
+
 func _mark_file_changes(file_tab: Control, has_changes: bool) -> void:
 	var idx = tab_container.get_tab_idx_from_control(file_tab)
 	var title = tab_container.get_tab_title(idx)

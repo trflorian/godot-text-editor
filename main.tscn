@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://bwam8rj06rksi"]
+[gd_scene load_steps=5 format=3 uid="uid://bwam8rj06rksi"]
 
 [ext_resource type="Script" path="res://file/file_manager.gd" id="1_erab1"]
 [ext_resource type="PackedScene" uid="uid://orima3j1b50a" path="res://file/tab/file_tab.tscn" id="2_vpn4i"]
 [ext_resource type="Script" path="res://menu/menu_file_controller.gd" id="3_7xq15"]
+[ext_resource type="Script" path="res://menu/menu_edit_controller.gd" id="4_o4i4w"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -14,7 +15,7 @@ grow_vertical = 2
 
 [node name="FileManager" type="Node" parent="." node_paths=PackedStringArray("tab_container", "file_dialog_open", "file_dialog_save")]
 script = ExtResource("1_erab1")
-tab_container = NodePath("../TabContainer")
+tab_container = NodePath("../TabContainerFiles")
 tab_file_prefab = ExtResource("2_vpn4i")
 file_dialog_open = NodePath("../FileDialogOpen")
 file_dialog_save = NodePath("../FileDialogSave")
@@ -56,14 +57,16 @@ popup/item_5/id = 5
 script = ExtResource("3_7xq15")
 file_manager = NodePath("../../../../FileManager")
 
-[node name="MenuButtonEdit" type="MenuButton" parent="PanelContainerTopMenu/MarginContainer/HBoxContainer"]
+[node name="MenuButtonEdit" type="MenuButton" parent="PanelContainerTopMenu/MarginContainer/HBoxContainer" node_paths=PackedStringArray("file_manager")]
 layout_mode = 2
 text = "Edit"
 item_count = 1
 popup/item_0/text = "Clear"
 popup/item_0/id = 0
+script = ExtResource("4_o4i4w")
+file_manager = NodePath("../../../../FileManager")
 
-[node name="TabContainer" type="TabContainer" parent="."]
+[node name="TabContainerFiles" type="TabContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

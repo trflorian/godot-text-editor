@@ -40,5 +40,9 @@ func save_to_file(file_path: String) -> void:
 	original_file_content = content
 	on_file_changed.emit(false)
 
-func on_tab_selected():
+func on_tab_selected() -> void:
 	text_edit.grab_focus()
+
+func clear_content() -> void:
+	text_edit.clear()
+	_on_text_changed()
