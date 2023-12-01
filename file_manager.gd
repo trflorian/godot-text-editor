@@ -12,7 +12,19 @@ func _ready() -> void:
 	file_dialog_open.file_selected.connect(_on_open_file)
 	file_dialog_save.file_selected.connect(_on_save_file)
 
+func _on_tab_changed(id: int) -> void:
+	print(id)
+
+func _tab_count() -> int:
+	return tab_container.get_child_count()
+
+func _any_file_tabs() -> bool:
+	return _tab_count() > 0
+
 func close_current_file() -> void:
+	if not _any_file_tabs():
+		return
+		
 	var active_tab = tab_container.get_current_tab_control()
 	active_tab.queue_free()
 
@@ -27,7 +39,7 @@ func create_new_file_tab() -> int:
 	tab_container.add_child(new_tab)
 	
 	var idx = tab_container.get_tab_idx_from_control(new_tab)
-	tab_container.set_tab_title(idx, "[unnamed]")
+	tab_container.set_tab_title(idx, "[unnamed]*")
 	
 	tab_container.current_tab = idx
 	
