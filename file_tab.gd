@@ -20,6 +20,20 @@ func load_from_file(file_path: String) -> void:
 
 	var file = FileAccess.open(file_path, FileAccess.READ)
 	var content = file.get_as_text()
+	file.close()
 	
 	text_edit.text = content
 	original_file_content = content
+	
+
+func save_to_file(file_path: String) -> void:
+	print("Saving file to %s" % file_path)
+	
+	var content = text_edit.text
+	var file = FileAccess.open(file_path, FileAccess.WRITE)
+	
+	file.store_string(content)
+	file.close()
+	
+	original_file_content = content
+	on_file_changed.emit(false)

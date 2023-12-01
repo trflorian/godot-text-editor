@@ -10,6 +10,7 @@ class_name FileManager
 
 func _ready() -> void:
 	file_dialog_open.file_selected.connect(_on_open_file)
+	file_dialog_save.file_selected.connect(_on_save_file)
 
 func close_current_file() -> void:
 	var active_tab = tab_container.get_current_tab_control()
@@ -30,11 +31,12 @@ func create_new_file_tab() -> int:
 	
 	tab_container.current_tab = idx
 	
-	new_tab.on_file_changed.connect(func(has_changes): _mark_file_changes(idx, has_changes))
+	new_tab.on_file_changed.connect(func(has_changes): _mark_file_changes(new_tab, has_changes))
 	
 	return idx
 
-func _mark_file_changes(idx: int, has_changes: bool) -> void:
+func _mark_file_changes(file_tab: Control, has_changes: bool) -> void:
+	var idx = tab_container.get_tab_idx_from_control(file_tab)
 	var title = tab_container.get_tab_title(idx)
 	var title_changes = title.ends_with("*")
 	
@@ -46,11 +48,26 @@ func _mark_file_changes(idx: int, has_changes: bool) -> void:
 
 func _on_open_file(path: String) -> void:
 	var file_name = path.split("/")[-1]
-	
 	print("Opening file %s in %s" % [file_name, path])
 	
 	var idx = create_new_file_tab()
 	tab_container.set_tab_title(idx, file_name)
 	
-	var file_tab = tab_container.get_tab_control(idx)
+	var file_tab = tab_container.get_tab_control(idx) as FileTab
 	file_tab.load_from_file(path)
+	
+	# convenience when opening save file dialog, it is at the same path
+	file_dialog_save.current_path = path
+
+func _on_save_file(path: String) -> void:
+	var file_name = path.split("/")[-1]
+	print("Saving file %s in %s" % [file_name, path])
+	
+	var idx = tab_container.current_tab
+	tab_container.set_tab_title(idx, file_name)
+	
+	var file_tab = tab_container.get_tab_control(idx) as FileTab
+	file_tab.save_to_file(path)
+
+	# convenience when opening open file dialog, it is at the same path
+	file_dialog_open.current_path = path
