@@ -5,6 +5,16 @@ extends MenuButton
 func _ready() -> void:
 	get_popup().index_pressed.connect(_on_menu_item_selected)
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("file_new"):
+		file_manager.create_new_file_tab()
+	if event.is_action_pressed("file_open"):
+		file_manager.show_open_file_dialog()
+	if event.is_action_pressed("file_save"):
+		file_manager.show_save_file_dialog()
+	if event.is_action_pressed("file_close"):
+		file_manager.close_current_file()
+
 func _on_menu_item_selected(id: int) -> void:
 	if id == 0: # New File
 		file_manager.create_new_file_tab()
