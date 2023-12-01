@@ -11,13 +11,19 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="FileManager" type="Node" parent="." node_paths=PackedStringArray("tab_container", "file_dialog_open", "file_dialog_save")]
 script = ExtResource("1_kxlp3")
+tab_container = NodePath("../TabContainer")
+tab_file_prefab = ExtResource("3_kilfo")
+file_dialog_open = NodePath("../FileDialogOpen")
+file_dialog_save = NodePath("../FileDialogSave")
 
 [node name="PanelContainerTopMenu" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 31.0
+offset_bottom = 41.0
 grow_horizontal = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainerTopMenu"]
@@ -84,10 +90,3 @@ initial_position = 2
 size = Vector2i(600, 500)
 ok_button_text = "Save"
 access = 2
-
-[node name="FileManager" type="Node" parent="." node_paths=PackedStringArray("tab_container", "file_dialog_open", "file_dialog_save")]
-script = ExtResource("1_kxlp3")
-tab_container = NodePath("../TabContainer")
-tab_file_prefab = ExtResource("3_kilfo")
-file_dialog_open = NodePath("../FileDialogOpen")
-file_dialog_save = NodePath("../FileDialogSave")

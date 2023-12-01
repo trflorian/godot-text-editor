@@ -7,7 +7,7 @@ func _ready() -> void:
 
 func _on_menu_item_selected(id: int) -> void:
 	if id == 0: # New File
-		file_manager.create_new_file()
+		file_manager.create_new_file_tab()
 	elif id == 1: # Open File
 		file_manager.show_open_file_dialog()
 	elif id == 2: # Save File
